@@ -1,18 +1,17 @@
 #!env python
 # coding: utf-8
 # Dep: learn for crowd2
-# at - 9e2ad8e
+# at - c8ad0d1
 
 import tensorflow as tf
 from lc import train, config, analysis, Loader
 from tensorflow.contrib.layers import fully_connected, summarize_collection, dropout
 
 config.NUM_UNIT = 50
-config.LEARNING_RATE = 0.001
-config.DECAY_STEP = 15
+config.LEARNING_RATE = 0.01
+config.DECAY_STEP = 20
 config.DECAY_RATE = 0.96
 config.DATASIZE = 256
-config.STOP_THRESHOLD = 10**-8
 
 def max_out(inputs, num_units=config.NUM_UNIT, axis=None):
     shape = inputs.get_shape().as_list()
@@ -47,13 +46,11 @@ def five_layers_lrelu(x,ref_y, test):
 def apply_graph(graph):
     g1 = tf.Graph()
     with g1.as_default():
-        with tf.name_scope("train_net"):
-            x1, y1 = l.shuffle_batch(batch_size=config.DATASIZE)
-            graph(x1, y1, False)
+        x1, y1 = l.shuffle_batch(batch_size=config.DATASIZE)
+        graph(x1, y1, False)
 
-        with tf.name_scope("test_net"):
-            x2, y2 = l.validation()
-            graph(x2, y2, True)
+        x2, y2 = l.validation()
+        graph(x2, y2, True)
 
         summarize_collection("trainable_variables")
         summarize_collection("losses")
@@ -61,19 +58,31 @@ def apply_graph(graph):
     return g1
 
 
+# config.RESTORE_FROM = "08-06-17_21:19"
 
-config.DATAFILE = "learn_len.dat"
+config.DATAFILE = "learn_ple.dat"
 d = {
-    "name": "lenLambda",
+    "name": "pleLambda",
     "discription": "productive and new lc lib test"
 }
 l = Loader(d)
 
-for i in reversed(range(6)):
-    config.L2_LAMBDA = 0.3 ** i
-    print("\n CLS train {:.2e} lambda \n".format(config.L2_LAMBDA))
+for i in range(6):
+    config.L2_LAMBDA = 0.3**i
+    print("\n PLE train {:.2f} lambda \n".format(config.L2_LAMBDA))
     with apply_graph(five_layers_lrelu).as_default():
-        config.RESTORE_FROM = train.adaptive_train(20000)
+        train.adaptive_train(20000)
 
-    config.LEARNING_RATE = 1 * 10 ** -4
+config.DATAFILE = "learn_cls.dat"
+d = {
+    "name": "clsLambda",
+    "discription": "productive and new lc lib test"
+}
+l = Loader(d)
+
+for i in range(6):
+    config.L2_LAMBDA = 0.3**i
+    print("\n CLS train {:.2f} lambda \n".format(config.L2_LAMBDA))
+    with apply_graph(five_layers_lrelu).as_default():
+        train.adaptive_train(20000)
 
