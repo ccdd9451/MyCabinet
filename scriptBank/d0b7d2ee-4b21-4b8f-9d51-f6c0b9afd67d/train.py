@@ -110,7 +110,7 @@ config.DATAFILE = "learn_len.dat"
 d = {"name": "LenScreen", "discription": "Brute force to attemp converge."}
 l = Loader(d)
 details = []
-for i in range(50):
+for i in range(100):
     name = "lenScreen"
     details.append(screen_logic())
 
@@ -122,7 +122,7 @@ d = sorted(
 config.DATAFILE = "learn_len.dat"
 d = {"name": "LenScrAdv", "discription": "Attemp to converge."}
 l = Loader(d)
-for i in d[:5]:
+for i in d[:10]:
     config.RESTORE_FROM = i[0]
     train_logic()
 
