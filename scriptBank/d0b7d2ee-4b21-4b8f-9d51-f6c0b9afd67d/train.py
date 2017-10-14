@@ -6,12 +6,11 @@
 import tensorflow as tf
 from lc import train, config, analysis, Loader
 from tensorflow.contrib.layers import fully_connected, summarize_collection
-from tensorflow.contrib.keras.python.keras.layers import LeakyReLU
 
 config.NUM_UNIT = 10
 config.DATASIZE = 256
 config.STOP_THRESHOLD = 10**-8
-config.VERBOSE_EACH = 100
+config.VERBOSE_EACH = 500
 
 
 def max_out(inputs, num_units=config.NUM_UNIT, axis=None):
@@ -29,8 +28,6 @@ def max_out(inputs, num_units=config.NUM_UNIT, axis=None):
     shape += [num_channels // num_units]
     outputs = tf.reduce_max(tf.reshape(inputs, shape), -1, keep_dims=False)
     return outputs
-
-
 
 
 def five_layers(x, ref_y, test):
@@ -78,11 +75,11 @@ def apply_graph(graph, BGD=True):
 def screen_logic():
     config.RESTORE_FROM = None
     config.L2_LAMBDA = 0.00
-    config.LEARNING_RATE = 0.08
-    config.DECAY_RATE = 0.95
+    config.LEARNING_RATE = 0.1
+    config.DECAY_RATE = 0.90
     config.DECAY_STEP = 50
     with apply_graph(five_layers, BGD=False).as_default():
-        return train.adaptive_train(5000)
+        return train.simple_train(5000)
 
 def train_logic():
     config.L2_LAMBDA = 0.00
@@ -110,7 +107,7 @@ config.DATAFILE = "learn_len.dat"
 d = {"name": "LenScreen", "discription": "Brute force to attemp converge."}
 l = Loader(d)
 details = []
-for i in range(100):
+for i in range(40):
     name = "lenScreen"
     details.append(screen_logic())
 
