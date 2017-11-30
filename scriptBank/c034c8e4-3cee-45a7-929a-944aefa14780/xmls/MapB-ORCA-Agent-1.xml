@@ -1,0 +1,301 @@
+<?xml version="1.0"?>
+<!--
+  Copyright (c) 2009-2015  Glen Berseth, Mubbasir Kapadia, Shawn Singh, Petros Faloutsos, Glenn Reinman
+  See license.txt for complete license.
+-->
+<SteerSimOptions>
+  <!--
+This file contains options for SteerSim.  Edit this file to your preference, and
+then use the '-config' command line option to load these options in SteerSim.
+Options specified by the command line will override options in this configuration file.
+-->
+  <engine>
+    <!--
+    Options related to the simulation engine
+    -->
+    <!-- can be either "fixed-fast" (fixed simulation frame rate, running as fast as possible), "fixed-real-time" (fixed simulation frame rate, running in real-time), or "variable-real-time" (variable simulation frame rate in real-time). -->
+    <clockMode>fixed-fast</clockMode>
+    <!-- The fixed frames-per-second for the simulation clock.  This value is used when simulationClockMode is "fixed-fast" or "fixed-real-time". -->
+    <fixedFPS>20</fixedFPS>
+    <!-- The maximum time-step allowed when the clock is in "variable-real-time" mode.  If the proposed time-step is larger, this value will be used instead, at the expense of breaking synchronization between simulation time and real-time. -->
+    <maxVariableDt>0.2</maxVariableDt>
+    <!-- The minimum time-step allowed when the clock is in "variable-real-time" mode.  If the proposed time-step is smaller, this value will be used instead, effectively limiting the max frame rate. -->
+    <minVariableDt>0.001</minVariableDt>
+    <!-- The default directory to search for dynamic plug-in modules at runtime. -->
+    <moduleSearchPath>../lib/</moduleSearchPath>
+    <!-- The default number of frames to simulate - 0 means run the entire simulation until all agents are disabled. -->
+    <numFrames>0</numFrames>
+    <!-- The default number of threads to run on the simulation -->
+    <numThreads>1</numThreads>
+    <!-- The default directory to search for test cases at runtime. -->
+    <testCaseSearchPath>../testcases/</testCaseSearchPath>
+    <startupModules>
+      <!--
+        The list of modules to use on startup.  Modules specified by the command line will be merged with this list.
+        -->
+      <module>scenario</module>
+    </startupModules>
+  </engine>
+  <engineDrivers>
+    <!--
+    Options related to engine drivers
+    -->
+    <commandLine>
+      <!--
+        Options for the command-line engine driver (currently there are no options for the command-line)
+        -->
+    </commandLine>
+    <glfw>
+      <!--
+        Options for the GLFW engine driver
+        -->
+      <!-- Starts the clock paused if "true". -->
+      <startWithClockPaused>false</startWithClockPaused>
+      <!-- Position of the openGL window in x -->
+      <windowPositionX>0</windowPositionX>
+      <!-- Position of the openGL window in y -->
+      <windowPositionY>0</windowPositionY>
+      <!-- Width of the openGL window in pixels -->
+      <windowSizeX>1200</windowSizeX>
+      <!-- Height of the openGL window in pixels -->
+      <windowSizeY>800</windowSizeY>
+      <!-- Title of the openGL window -->
+      <windowTitle>SteerSim</windowTitle>
+    </glfw>
+    <qt>
+      <!--
+        Options for the Qt engine driver (config for qt not implemented yet!)
+        -->
+    </qt>
+  </engineDrivers>
+  <global>
+    <!--
+    Options related to the main execution of the steersim
+    -->
+    <!-- The name of the engine driver to use, if not specified from command line -->
+    <engineDriver>glfw</engineDriver>
+    <!-- If a filename is specified, std::cerr will be redirected to that filename.  NOTE: Only std::cerr will be redirected; low-level and C-style output will not be redirected.  Exceptions will be caught and redirected to both the new and the original std::cerr output. -->
+    <redirectCerrToFile/>
+    <!-- If a filename is specified, std::clog will be redirected to that filename.  NOTE: Only std::clog will be redirected; low-level and C-style output will not be redirected. -->
+    <redirectClogToFile/>
+    <!-- If a filename is specified, std::cout will be redirected to that filename.  NOTE: Only std::cout will be redirected; low-level and C-style output will not be redirected. -->
+    <redirectCoutToFile/>
+  </global>
+  <spatialDatabase>
+    <!-- <useDatabase>navmeshDatabase</useDatabase>  -->
+    <!-- <useDatabase>girdDatabase</useDatabase> -->
+    <useDatabase>kdTreeDatabase</useDatabase>
+    <gridDatabase>
+      <!--
+	    Options related to the spatial database
+	    -->
+      <!-- Max number of items a grid cell can contain -->
+      <maxItemsPerGridCell>15</maxItemsPerGridCell>
+      <!-- Number of cells in the grid along the X axis -->
+      <numCellsX>200</numCellsX>
+      <!-- Number of cells in the grid along the Z axis -->
+      <numCellsZ>200</numCellsZ>
+      <!-- Total size of the grid along the X axis -->
+      <sizeX>200</sizeX>
+      <!-- Total size of the grid along the Z axis -->
+      <sizeZ>200</sizeZ>
+    </gridDatabase>
+  </spatialDatabase>
+  <planningDomain>
+    <!-- <planner>navmeshDomain</planner>  -->
+    <planner>gridDomain</planner>
+    <domainSettings>
+      <!--
+	    Options related to the spatial domain planner
+	    -->
+      <maxNodesToExpand>50000</maxNodesToExpand>
+    </domainSettings>
+  </planningDomain>
+  <gui>
+    <!--
+    Options related to the openGL visualization and interaction.  Also, make sure to look at the engine driver options for more interface-related options.
+    -->
+    <!-- The background color of the openGL visualization -->
+    <backgroundColor>
+      <r>0.5</r>
+      <g>0.5</g>
+      <b>0.28</b>
+    </backgroundColor>
+    <!-- <backgroundColor> <r>0.39</r> <g>0.58</g> <b>0.92</b> </backgroundColor> -->
+    <!-- The 3-D point the camera will look at -->
+    <!-- <cameraLookAt> <x>0.809224</x> <y>0</y> <z>-0.944422</z> </cameraLookAt> -->
+    <!-- Camera's physical position in the 3-D scene -->
+    <!-- <cameraPosition> <x>0.776362</x> <y>21.851</y> <z>-5.63885</z> </cameraPosition> -->
+    <!-- The vector that represnts the upright orientation for the camera -->
+    <!-- <cameraUp> <x>0</x> <y>1</y> <z>0</z> </cameraUp> -->
+    <!-- The 3-D point the camera will look at -->
+    <cameraLookAt>
+      <x>0</x>
+      <y>0</y>
+      <z>0</z>
+    </cameraLookAt>
+    <!-- <cameraLookAt> <x>8.09781</x> <y>0</y> <z>6.17322</z> </cameraLookAt> -->
+    <!-- Camera's physical position in the 3-D scene -->
+    <!-- <cameraPosition> <x>0.028143</x> <y>20.0000</y> <z>-1.08368</z> </cameraPosition> -->
+    <cameraPosition>
+      <x>0</x>
+      <y>250</y>
+      <z>0</z>
+    </cameraPosition>
+    <!--  <cameraPosition> <x>8.09803</x> <y>18.7759</y> <z>6.33521</z> </cameraPosition> -->
+    <cameraUp>
+      <x>-1</x>
+      <y>0</y>
+      <z>0</z>
+    </cameraUp>
+    <!-- The vertical field of view of the camera, in degrees (CURRENTLY HAS NO EFFECT) -->
+    <cameraVerticalFieldOfView>90</cameraVerticalFieldOfView>
+    <!-- Set to "true" to be able to select agents with the mouse, "false" is recommended when using many many agents, because selection algorithm is brute-force and slow -->
+    <canUseMouseSelection>true</canUseMouseSelection>
+    <!-- Set to "true" to be able to zoom with the mouse wheel; this does not disable other possible ways to zoom the camera. -->
+    <canUseMouseWheelZoom>true</canUseMouseWheelZoom>
+    <!-- width of lines drawn in the GUI -->
+    <lineWidth>3</lineWidth>
+    <!-- Scaling factor for sensitivity of camera movement when using mouse -->
+    <mouseMovementFactor>0.001</mouseMovementFactor>
+    <!-- Scaling factor for sensitivity of camera rotation when using mouse. -->
+    <mouseRotationFactor>0.007</mouseRotationFactor>
+    <!-- Scaling factor for sensitivity of camera zoom when using mouse -->
+    <mouseZoomFactor>0.0075</mouseZoomFactor>
+    <!-- Set to "true" to remove jaggies, for smoother-looking visuals, but lower performance -->
+    <useAntialiasing>true</useAntialiasing>
+    <!-- DO NOT USE THIS VALUE.  It is only kept here for backwards compatibility. -->
+    <useShadows>true</useShadows>
+    <!-- Set to "false" for higher performance that is not synchronizeded with the display's refresh rate -->
+    <useVsync>false</useVsync>
+  </gui>
+  <keyboard>
+    <!--
+    Maps various actions to keyboard input (config for keybaord not implemented yet!)
+    -->
+  </keyboard>
+  <modules>
+    <!--
+    Module-specific options.  Any options specified on the command-line will override the options specified here.  Modules specified here will not necessarily be loaded when started; for that use the startupModules option for the engine.
+    -->
+    <!--
+        <testCasePlayer>
+            <ai>dummyAI</ai>
+            <testcase>simple-1.xml</testcase>
+        </testCasePlayer>
+	-->
+    <scenario>
+      <scenarioAI>rvo2dAI</scenarioAI>
+      <numScenarios type="int">10000</numScenarios>
+      <!-- <egocentric>1</egocentric> -->
+      <maxFrames type="int">5000</maxFrames>
+      <subspace type="file">../../nncases/environment1.xml</subspace>
+      <useBenchmark>1</useBenchmark>
+      <benchmarkLog>logfiles/MapB-ORCA-Agent-1.log</benchmarkLog>
+      <benchmarkTechnique type="string">compositePLE</benchmarkTechnique>
+      <agentRadius type="double">7</agentRadius>
+      <gridResolutionX type="int">10</gridResolutionX>
+      <gridResolutionY type="int">10</gridResolutionY>
+      <maxNumAgents type="int">6</maxNumAgents>
+      <agentMinSpeed type="double">1</agentMinSpeed>
+      <agentMaxSpeed type="double">3</agentMaxSpeed>
+      <randomGeneratorRadius type="double">0.5</randomGeneratorRadius>
+      <!-- <circlePara1 type="list">(39.0;25.0;3.0;0.0;0.0;0.0)</circlePara1> -->
+      <!-- <subspaceWallParams type="list">(42.0;25.0)</subspaceWallParams> -->
+      <miscCPara0 type="list">(40;1;-25;14;21;-45;-135;10;90;90)</miscCPara0>
+      <!-- x,z,l0(+/-),l1(+/-),l2,a1(+/-),a2, xz_b, a1_b, a2_b: 10 -->
+      <miscAPara0 type="list">(-60;-30;20;40)</miscAPara0>
+      <!-- x,z,l0(+/-), xz_b: 4 -->
+      <miscBPara0 type="list">(20;-96;26;-90;10;180)</miscBPara0>
+      <!-- x,z,l0(+/-),a, xz_b, a_b: 6 -->
+      <vFinPara1 type="list">(40;25;-25;20;-45;10;90)</vFinPara1>
+      <!-- x,z,l0(+/-),l1(+/-),a(+/-), xz_b, a_b: 7 -->
+      <vFinPara2 type="list">(40;60;-25;25;-45;10;90)</vFinPara2>
+      <vFinPara3 type="list">(-45;74;25;-10;-45;10;90)</vFinPara3>
+      <vFinPara4 type="list">(-45;50;25;-10;-45;10;90)</vFinPara4>
+      <vFinPara5 type="list">(-45;0;20;25;45;10;90)</vFinPara5>
+      <vFinPara6 type="list">(60;-50;-25;15;-45;30;90)</vFinPara6>
+      <rotBarPara1 type="list">(-45;-75;30;60;45)</rotBarPara1>
+      <!-- x,z,l,a, a_b: 5 -->
+      <rotateBoxPara1 type="list">(-10;-35;40;10;45.0;10.0;30.0;90.0)</rotateBoxPara1>
+      <!-- x,z,xl,zl,a, x_b,z_b,a_b: 8 -->
+      <!-- <regions>50,1,10,2</regions> -->
+      <!--  <parameters>7+10+10+6+1+3+1</parameters> -->
+      <!-- Width of the openGL window in pixels -->
+      <windowSizeX>1200</windowSizeX>
+      <!-- Height of the openGL window in pixels -->
+      <windowSizeY>800</windowSizeY>
+      <useBenchmark/>
+      <fixEnv>true</fixEnv> <LayoutNum>22</LayoutNum>
+      <fixCrowd>true</fixCrowd> <CrowdNum>27</CrowdNum>
+      <fixAgent>false</fixAgent> <aiParamNum>4</aiParamNum>
+      <readParam>false</readParam>
+      <numReSim>1</numReSim>
+      <Params>
+        0.0
+      </Params>
+    </scenario>
+    <steerstats>
+      <!-- Be ware some of these options might override others in the scenario module -->
+      <!--  The list of possible options can be found in SteerStatsOptions.py
+            Or you can just use help  -->
+      <ai type="string">rvo2dAI</ai>
+      <checkAgentInteraction type="exists"/>
+      <numScenarios type="int">10</numScenarios>
+      <benchmark type="string">compositePLE</benchmark>
+      <statsOnly type="exists"/>
+      <scenarioSetInitId type="integer">0</scenarioSetInitId>
+      <!-- <scenarioDIR type="file">data/scenarios/representativeSet_Intersections/</scenarioDIR>  -->
+      <randomScenarios type="exists"/>
+      <!-- <dataDir type="file">data/simData/</dataDir> -->
+      <dataDir type="file">data/simData/</dataDir>
+      <cmaLogFileDir type="string">data/simData/</cmaLogFileDir>
+      <numFrames type="integer">10000</numFrames>
+      <!-- <optimizeWith type="string">bruteForce</optimizeWith>  -->
+      <optimizeWith type="string">CMA-ES</optimizeWith>
+      <!--
+            	This should probably matched to the steering algorithm used.
+             -->
+      <paramFile type="file">xml/config/sf-param-config.xml</paramFile>
+      <!-- <commandLine type="exists"/>  -->
+      <!--
+            	Determines the number of processes the simulation can use
+            	This is easiest if specified on the command line
+             -->
+      <!-- <availableProcesses type="int">1</availableProcesses>  -->
+      <!-- <noSimulation type="exists"/>  -->
+      <!--
+            	This will atempt to match a function in SteerStats class and use that function for the objective
+            -->
+      <!-- <objectiveFunction type="string">agentFlowMetricGlobal</objectiveFunction>  -->
+      <objectiveFunction type="string">varOpt</objectiveFunction>
+      <metricWeights type="list">
+        <simulationTime>0.2</simulationTime>
+        <ple>0.2</ple>
+        <coverage>0.2</coverage>
+        <distance>0.2</distance>
+        <computation>0.2</computation>
+        <entropy>0</entropy>
+      </metricWeights>
+      <penaltyFunction type="string"/>
+      <!-- <subspaceParams type="list"></subspaceParams>  -->
+      <!--
+            	Used to dictate the number of optimization evals cma can make
+            -->
+      <CMAMaxEvals type="integer">800</CMAMaxEvals>
+      <!--
+            	This can be used to change the type of object generated in the subspace
+             -->
+      <!-- <scenariosubspaceObsType>circle</scenariosubspaceObsType>  -->
+      <!-- <scenariosubspaceObsType>square</scenariosubspaceObsType>  -->
+      <processingEvents type="list">
+        <PostProcessEvent_MakeVideo type="bool">false</PostProcessEvent_MakeVideo>
+      </processingEvents>
+    </steerstats>
+  </modules>
+  <mouse>
+    <!--
+    Maps various actions to mouse input (config for mouse not implemented yet!)
+    -->
+  </mouse>
+</SteerSimOptions>
